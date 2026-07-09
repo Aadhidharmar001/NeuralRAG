@@ -1,6 +1,6 @@
 import os
 
-DEFAULT_MODEL = os.getenv("DEFAULT_MODEL", "llama3-70b-8192")
+DEFAULT_MODEL = os.getenv("DEFAULT_MODEL", "llama-3.3-70b-versatile")
 
 SUPPORTED_MODELS = [
     DEFAULT_MODEL,

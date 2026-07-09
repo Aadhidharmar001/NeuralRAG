@@ -21,3 +21,6 @@ src/chroma_db/
 colab-notebooks/	
 knowledge-base/
     README.md
+.env
+.env.*
+!.env.example
