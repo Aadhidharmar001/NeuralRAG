@@ -19,12 +19,15 @@ from utils.config import DEFAULT_MODEL, SUPPORTED_MODELS
 from utils.rag_components import invoke_with_fallback
 
 
+from PIL import Image
+
 # ─────────────────────────────────────────────────────────────────────────────
 # PAGE CONFIGURATION — must be FIRST Streamlit call
 # ─────────────────────────────────────────────────────────────────────────────
+favicon = Image.open(os.path.join(os.path.dirname(__file__), "favicon.png"))
 st.set_page_config(
     page_title="NeuralRAG · Intelligent Research Agent",
-    page_icon="⬡",
+    page_icon=favicon,
     layout="wide",
     initial_sidebar_state="expanded",
 )

@@ -12,3 +12,4 @@ pypdf>=6.1.1
 python-dotenv>=1.1.1
 sentence-transformers>=5.1.1
 streamlit>=1.50.0
+markdown
