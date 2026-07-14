@@ -60,9 +60,9 @@ def invoke_with_fallback(prompt: str, preferred_model: Optional[str] = None):
         except Exception as error:
             if _is_rate_limit_error(error):
                 last_rate_limit_error = error
-                continue
-            last_other_error = error
-            raise
+            else:
+                last_other_error = error
+            continue
 
     if last_rate_limit_error is not None:
         raise RuntimeError(
