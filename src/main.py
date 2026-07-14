@@ -958,7 +958,7 @@ def summarize_node(state: GraphState) -> GraphState:
     strategy_label  = "single-pass" if use_single_pass else "map-reduce"
     print(
         f"[summarize_node] {total_pages} total page(s) across {len(pdf_map)} file(s) "
-        f"→ using {strategy_label} strategy (threshold={SUMMARY_SINGLEPASS_PAGE_LIMIT})"
+        f"-> using {strategy_label} strategy (threshold={SUMMARY_SINGLEPASS_PAGE_LIMIT})"
     )
 
     # ══════════════════════════════════════════════════════════════════════════
@@ -1086,7 +1086,7 @@ def retrieve_node(state: GraphState) -> GraphState:
     mode = state.get("source_mode", "hybrid")
 
     if mode == "web_only":
-        print("[retrieve_node] source_mode=web_only → skipping RAG, forcing web fallback")
+        print("[retrieve_node] source_mode=web_only -> skipping RAG, forcing web fallback")
         return {"documents": [], "sources": [], "needs_web_search": True}
 
     question    = state["question"]
@@ -1094,7 +1094,7 @@ def retrieve_node(state: GraphState) -> GraphState:
     retriever   = create_retriever()
 
     if vectorstore is None:
-        print("[retrieve_node] vectorstore is None → web fallback")
+        print("[retrieve_node] vectorstore is None -> web fallback")
         return {"documents": [], "sources": [], "needs_web_search": True}
 
     relevant_docs: List[Document] = []
@@ -1107,10 +1107,10 @@ def retrieve_node(state: GraphState) -> GraphState:
         print(f"[retrieve_node] Raw (doc, score) pairs returned ({len(docs_and_scores)} total):")
         for i, (doc, score) in enumerate(docs_and_scores):
             snippet = doc.page_content[:80].replace("\n", " ")
-            print(f"  [{i}] score={score:.4f} | {snippet}…")
+            print(f"  [{i}] score={score:.4f} | {snippet}...")
 
         if not docs_and_scores:
-            print("[retrieve_node] similarity_search returned 0 results → web fallback")
+            print("[retrieve_node] similarity_search returned 0 results -> web fallback")
             return {"documents": [], "sources": [], "needs_web_search": True}
 
         all_scores = [score for _, score in docs_and_scores]
@@ -1121,14 +1121,14 @@ def retrieve_node(state: GraphState) -> GraphState:
             relevant_docs = [doc for doc, score in docs_and_scores if score <= DISTANCE_CEILING]
             print(
                 f"[retrieve_node] Scores appear to be raw distances (max={max_score:.4f}). "
-                f"Keeping docs with distance ≤ {DISTANCE_CEILING}. "
+                f"Keeping docs with distance <= {DISTANCE_CEILING}. "
                 f"Surviving: {len(relevant_docs)}/{len(docs_and_scores)}"
             )
         else:
             relevant_docs = [doc for doc, score in docs_and_scores if score >= RETRIEVAL_THRESHOLD]
             print(
                 f"[retrieve_node] Scores are similarities (max={max_score:.4f}). "
-                f"Keeping docs with score ≥ {RETRIEVAL_THRESHOLD}. "
+                f"Keeping docs with score >= {RETRIEVAL_THRESHOLD}. "
                 f"Surviving: {len(relevant_docs)}/{len(docs_and_scores)}"
             )
 
@@ -1139,10 +1139,10 @@ def retrieve_node(state: GraphState) -> GraphState:
         print(f"[retrieve_node] retriever.invoke() returned {len(relevant_docs)} docs")
 
     if not relevant_docs:
-        print("[retrieve_node] No relevant docs after filtering → web fallback triggered")
+        print("[retrieve_node] No relevant docs after filtering -> web fallback triggered")
         return {"documents": [], "sources": [], "needs_web_search": True}
 
-    print(f"[retrieve_node] {len(relevant_docs)} relevant docs found → using RAG, no web fallback")
+    print(f"[retrieve_node] {len(relevant_docs)} relevant docs found -> using RAG, no web fallback")
     return {
         "documents":        relevant_docs,
         "sources":          _build_source_summary(relevant_docs),
@@ -1156,7 +1156,7 @@ def web_search_node(state: GraphState) -> GraphState:
     trusted_domains = state.get("trusted_domains", [])
 
     if not trusted_domains:
-        print("[web_search_node] trusted_domains is empty → blocking web search (P1)")
+        print("[web_search_node] trusted_domains is empty -> blocking web search (P1)")
         return {
             "documents":   [],
             "sources":     [],
